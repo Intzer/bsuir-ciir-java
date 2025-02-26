@@ -6,9 +6,6 @@ PostgreSQL: docker run --name postgresql -e POSTGRESQL_USERNAME=myuser -e POSTGR
 
 ### Database
 Estimation: 1 day
-
 Total: -
-
 Scheme:
-
 ![bd_scheme](https://github.com/intzer/bsuir-ciir-java/blob/main/bd_scheme.png?raw=true)
