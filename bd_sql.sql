@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS public.config
 (
     lang character varying(255) COLLATE pg_catalog."default" NOT NULL,
     currency_id bigint NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.currencies
 (
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS public.currencies
     name character varying(128) COLLATE pg_catalog."default" NOT NULL,
     rate_to_byn numeric(10, 5) NOT NULL,
     CONSTRAINT currencies_pkey PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.invoices
 (
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS public.invoices
     user_id bigint NOT NULL,
     currency_id bigint,
     CONSTRAINT invoices_pkey PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.motorcycles
 (
@@ -35,15 +35,16 @@ CREATE TABLE IF NOT EXISTS public.motorcycles
     type_id bigint NOT NULL,
     created_at integer NOT NULL,
     vin character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    color_id bigint,
     CONSTRAINT motorcycles_pkey PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.motorcycles_colors
 (
     id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT motorcycles_colors_pkey PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.motorcycles_types
 (
@@ -54,16 +55,15 @@ CREATE TABLE IF NOT EXISTS public.motorcycles_types
     engine_volume integer NOT NULL,
     max_speed integer NOT NULL,
     fuel_rate numeric(10, 3) NOT NULL,
-    color_id bigint NOT NULL,
     CONSTRAINT motorcycles_types_pkey PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.payments_systems
 (
     id bigint NOT NULL,
     name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT payments_systems_pkey PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.rentals
 (
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS public.rentals
     duration_id bigint,
     expired_at integer NOT NULL,
     CONSTRAINT users_motorcycles_pkey PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.rentals_durations
 (
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS public.rentals_durations
     days integer NOT NULL,
     cost integer NOT NULL,
     CONSTRAINT rental_durations_pkey PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.reservations_durations
 (
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS public.reservations_durations
     rental_numbers integer NOT NULL,
     minutes integer NOT NULL,
     CONSTRAINT reservations_durations_pkey PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.reservations_motorcycles
 (
@@ -98,8 +98,9 @@ CREATE TABLE IF NOT EXISTS public.reservations_motorcycles
     motorcycle_id bigint NOT NULL,
     expired_at integer NOT NULL,
     duration_id bigint NOT NULL,
+    user_id bigint NOT NULL,
     CONSTRAINT motorcycles_reservations_pkey PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS public.users
 (
@@ -112,91 +113,99 @@ CREATE TABLE IF NOT EXISTS public.users
     enter_code_expired_at integer NOT NULL,
     CONSTRAINT users_pkey PRIMARY KEY (id),
     CONSTRAINT phone_number UNIQUE (phone_number)
-    );
+);
 
 ALTER TABLE IF EXISTS public.config
     ADD CONSTRAINT fk_c_currency_id_c_id FOREIGN KEY (currency_id)
-    REFERENCES public.currencies (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE RESTRICT
-    NOT VALID;
+        REFERENCES public.currencies (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+        NOT VALID;
 
 
 ALTER TABLE IF EXISTS public.invoices
     ADD CONSTRAINT fk_i_currency_id_c_id FOREIGN KEY (currency_id)
-    REFERENCES public.currencies (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE SET NULL
-    NOT VALID;
+        REFERENCES public.currencies (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+        NOT VALID;
 
 
 ALTER TABLE IF EXISTS public.invoices
     ADD CONSTRAINT fk_i_payment_system_id_ps_id FOREIGN KEY (payment_system_id)
-    REFERENCES public.payments_systems (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE SET NULL
-    NOT VALID;
+        REFERENCES public.payments_systems (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+        NOT VALID;
 
 
 ALTER TABLE IF EXISTS public.invoices
     ADD CONSTRAINT fk_i_user_id_u_id FOREIGN KEY (user_id)
-    REFERENCES public.users (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE CASCADE
-    NOT VALID;
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID;
 
 
 ALTER TABLE IF EXISTS public.motorcycles
     ADD CONSTRAINT fk_m_type_id_mt_id FOREIGN KEY (type_id)
-    REFERENCES public.motorcycles_types (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE CASCADE;
+        REFERENCES public.motorcycles_types (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
 
 
-ALTER TABLE IF EXISTS public.motorcycles_types
-    ADD CONSTRAINT fk_mt_color_id_mc_id FOREIGN KEY (color_id)
-    REFERENCES public.motorcycles_colors (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE RESTRICT
-    NOT VALID;
+ALTER TABLE IF EXISTS public.motorcycles
+    ADD CONSTRAINT fk_m_color_id_mc_id FOREIGN KEY (color_id)
+        REFERENCES public.motorcycles_colors (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+        NOT VALID;
 
 
 ALTER TABLE IF EXISTS public.rentals
     ADD CONSTRAINT fk_r_duration_id_rd_id FOREIGN KEY (duration_id)
-    REFERENCES public.rentals_durations (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE SET NULL
-    NOT VALID;
+        REFERENCES public.rentals_durations (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+        NOT VALID;
 
 
 ALTER TABLE IF EXISTS public.rentals
     ADD CONSTRAINT fk_r_motorcycle_id_m_id FOREIGN KEY (motorcycle_id)
-    REFERENCES public.motorcycles (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE CASCADE
-    NOT VALID;
+        REFERENCES public.motorcycles (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID;
 
 
 ALTER TABLE IF EXISTS public.rentals
     ADD CONSTRAINT fk_r_user_id_u_id FOREIGN KEY (user_id)
-    REFERENCES public.users (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE CASCADE
-    NOT VALID;
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID;
 
 
 ALTER TABLE IF EXISTS public.reservations_motorcycles
     ADD CONSTRAINT fk_rm_motorcycle_id_m_id FOREIGN KEY (motorcycle_id)
-    REFERENCES public.motorcycles (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE CASCADE;
+        REFERENCES public.motorcycles (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
 
 
 ALTER TABLE IF EXISTS public.reservations_motorcycles
     ADD CONSTRAINT kf_rm_duration_id_rd_id FOREIGN KEY (duration_id)
-    REFERENCES public.reservations_durations (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-       ON DELETE SET NULL
-    NOT VALID;
+        REFERENCES public.reservations_durations (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+        NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.reservations_motorcycles
+    ADD CONSTRAINT fk_rm_user_id_u_id FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID;
 
 END;
