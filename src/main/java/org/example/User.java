@@ -1,17 +1,18 @@
 package org.example;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class User {
     private Long id;
     private String phoneNumber;
-    private int createdAt;
-    private int updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private BigDecimal balance;
     private String enterCode;
-    private int enterCodeExpiredAt;
+    private LocalDateTime enterCodeExpiredAt;
 
-    public User(Long id, String phoneNumber, int createdAt, int updatedAt, BigDecimal balance, String enterCode, int enterCodeExpiredAt) {
+    public User(Long id, String phoneNumber, LocalDateTime createdAt, LocalDateTime updatedAt, BigDecimal balance, String enterCode, LocalDateTime enterCodeExpiredAt) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.createdAt = createdAt;
@@ -23,9 +24,9 @@ public class User {
 
     public Long getId() { return id; }
     public String getPhoneNumber() { return phoneNumber; }
-    public int getCreatedAt() { return createdAt; }
-    public int getUpdatedAt() { return updatedAt; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
     public BigDecimal getBalance() { return balance; }
     public String getEnterCode() { return enterCode; }
-    public int getEnterCodeExpiredAt() { return enterCodeExpiredAt; }
+    public LocalDateTime getEnterCodeExpiredAt() { return enterCodeExpiredAt; }
 }

@@ -2,14 +2,14 @@ package org.example;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserService {
     private final UserRepository userRepository = new UserRepository();
 
-    public void addUser(String phoneNumber, BigDecimal balance, String enterCode, int enterCodeExpiredAt) throws SQLException {
-        int now = (int) (System.currentTimeMillis() / 1000);
-        User user = new User(null, phoneNumber, now, now, balance, enterCode, enterCodeExpiredAt);
+    public void addUser(String phoneNumber, BigDecimal balance, String enterCode, LocalDateTime enterCodeExpiredAt) throws SQLException {
+        User user = new User(null, phoneNumber, LocalDateTime.now(), LocalDateTime.now(), balance, enterCode, enterCodeExpiredAt);
         userRepository.createUser(user);
     }
 

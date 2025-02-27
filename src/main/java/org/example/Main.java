@@ -2,6 +2,7 @@ package org.example;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Main {
@@ -32,8 +33,9 @@ public class Main {
                         System.out.print("Введите код входа: ");
                         scanner.nextLine();
                         String enterCode = scanner.nextLine();
-                        System.out.print("Введите время истечения кода: ");
-                        int enterCodeExpiredAt = scanner.nextInt();
+                        System.out.print("Введите время истечения кода (минут): ");
+                        int minutes = scanner.nextInt();
+                        LocalDateTime enterCodeExpiredAt = LocalDateTime.now().plusMinutes(minutes);
                         userService.addUser(phone, balance, enterCode, enterCodeExpiredAt);
                         break;
                     case 2:

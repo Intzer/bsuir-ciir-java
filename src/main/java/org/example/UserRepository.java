@@ -2,6 +2,7 @@ package org.example;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +12,11 @@ public class UserRepository {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, user.getPhoneNumber());
-            stmt.setInt(2, user.getCreatedAt());
-            stmt.setInt(3, user.getUpdatedAt());
+            stmt.setObject(2, user.getCreatedAt());
+            stmt.setObject(3, user.getUpdatedAt());
             stmt.setBigDecimal(4, user.getBalance());
             stmt.setString(5, user.getEnterCode());
-            stmt.setInt(6, user.getEnterCodeExpiredAt());
+            stmt.setObject(6, user.getEnterCodeExpiredAt());
             stmt.executeUpdate();
         }
     }
@@ -30,11 +31,11 @@ public class UserRepository {
                 users.add(new User(
                         rs.getLong("id"),
                         rs.getString("phone_number"),
-                        rs.getInt("created_at"),
-                        rs.getInt("updated_at"),
+                        rs.getObject("created_at", LocalDateTime.class),
+                        rs.getObject("updated_at", LocalDateTime.class),
                         rs.getBigDecimal("balance"),
                         rs.getString("enter_code"),
-                        rs.getInt("enter_code_expired_at")
+                        rs.getObject("enter_code_expired_at", LocalDateTime.class)
                 ));
             }
         }
@@ -52,11 +53,11 @@ public class UserRepository {
                 return new User(
                         rs.getLong("id"),
                         rs.getString("phone_number"),
-                        rs.getInt("created_at"),
-                        rs.getInt("updated_at"),
+                        rs.getObject("created_at", LocalDateTime.class),
+                        rs.getObject("updated_at", LocalDateTime.class),
                         rs.getBigDecimal("balance"),
                         rs.getString("enter_code"),
-                        rs.getInt("enter_code_expired_at")
+                        rs.getObject("enter_code_expired_at", LocalDateTime.class)
                 );
             }
         }
