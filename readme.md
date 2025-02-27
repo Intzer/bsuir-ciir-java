@@ -10,3 +10,7 @@
 - Total: 6 hours
 - Scheme:
 ![bd_scheme](https://github.com/intzer/bsuir-ciir-java/blob/main/bd_scheme.png?raw=true)
+
+### Crud on Spring & Hibernate
+- Estimation: 2 days
+- Total: -
