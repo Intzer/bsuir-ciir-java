@@ -11,14 +11,17 @@
             <div class="row">
                 <c:forEach var="moto" items="${motorcycles}">
                     <div class="col-md-6 col-lg-4 col-xl-3">
-                        <div class="card mb-2">
+                        <div class="card mb-3">
                             <div class="card-header">
                                 ${moto.type.name}
                             </div>
                             <div class="card-body">
-                                <p class="mb-0">Engine: ${moto.type.engineVolume}</p>
-                                <p class="mb-0">Max Speed: ${moto.type.maxSpeed}</p>
-                                <p class="mb-0">Fuel Rate: ${moto.type.fuelRate}</p>
+                                <div class="ratio ratio-16x9">
+                                    <img src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" title="YouTube video" allowfullscreen></img>
+                                </div>
+                                <p class="mb-0">Engine: ${moto.type.engineVolume} cm</p>
+                                <p class="mb-0">Max Speed: ${moto.type.maxSpeed} km/hr</p>
+                                <p class="mb-0">Fuel Rate: ${moto.type.fuelRate} l/100km</p>
                                 <p class="mb-0">Color: ${moto.color.name}</p>
                                 <p class="mb-0">Vin: ${moto.vin}</p>
                             </div>
