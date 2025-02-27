@@ -26,7 +26,19 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> getUserByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber);
+    }
+
+    public Optional<User> getUserByIdAndCode(Long id, String code) {
+        return userRepository.findByIdAndEnterCode(id, code);
+    }
+
     public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
 

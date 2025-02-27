@@ -20,10 +20,9 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String index(Model model) {
 
         List<Motorcycle> motorcycles = motorcycleService.getAllMotorcycles();
-        System.out.println("Loaded motorcycles: " + motorcycles.size());
 
         model.addAttribute("page_title", "Motorcycles Rental Company");
         model.addAttribute("page", "../index");

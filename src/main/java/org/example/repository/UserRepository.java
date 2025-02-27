@@ -4,8 +4,10 @@ import org.example.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    // Можно добавить кастомные методы, например, поиск по номеру телефона
-    User findByPhoneNumber(String phoneNumber);
+    Optional<User> findByPhoneNumber(String phoneNumber);
+    Optional<User> findByIdAndEnterCode(Long id, String enterCode);
 }

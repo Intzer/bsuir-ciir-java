@@ -25,7 +25,7 @@ public class User {
     private String enterCode;
 
     @Column(nullable = false)
-    private Integer enterCodeExpiredAt;
+    private LocalDateTime enterCodeExpiredAt;
 
     @CreationTimestamp
     @Column(updatable = false) // Заполняется один раз при создании
@@ -36,6 +36,12 @@ public class User {
 
     // Конструкторы, геттеры и сеттеры
     public User() {}
+    public User(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        this.balance = 0.0f; // Значение по умолчанию
+        this.enterCode = "";
+        this.enterCodeExpiredAt = LocalDateTime.now();
+    }
 
     public Long getId() { return id; }
     public String getPhoneNumber() { return phoneNumber; }
@@ -43,9 +49,9 @@ public class User {
     public Float getBalance() { return balance; }
     public void setBalance(Float balance) { this.balance = balance; }
     public String getEnterCode() { return enterCode; }
-    public void setEnterCode(String enterCode) { this.enterCode = User.this.enterCode; }
-    public Integer getEnterCodeExpiredAt() { return enterCodeExpiredAt; }
-    public void setEnterCodeExpiredAt(Integer enterCodeExpiredAt) { this.enterCodeExpiredAt = enterCodeExpiredAt; }
+    public void setEnterCode(String enterCode) { this.enterCode = enterCode; }
+    public LocalDateTime getEnterCodeExpiredAt() { return enterCodeExpiredAt; }
+    public void setEnterCodeExpiredAt(LocalDateTime enterCodeExpiredAt) { this.enterCodeExpiredAt = enterCodeExpiredAt; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 }
