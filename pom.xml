@@ -14,27 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!-- Указываем родительский POM Spring Boot -->
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.2</version> <!-- Проверь актуальную версию -->
-        <relativePath/> <!-- Отключает поиск локального родителя -->
-    </parent>
-
     <dependencies>
-        <!-- Базовый Spring Boot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- JPA + Hibernate -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
         <!-- Драйвер PostgreSQL -->
         <dependency>
             <groupId>org.postgresql</groupId>
