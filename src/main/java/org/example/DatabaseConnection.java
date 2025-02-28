@@ -14,8 +14,6 @@ public class DatabaseConnection {
         String user = dotenv.get("DB_USER");
         String password = dotenv.get("DB_PASSWORD");
 
-        System.out.println(password);
-
         return DriverManager.getConnection(url, user, password);
     }
 }
