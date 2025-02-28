@@ -1,6 +1,8 @@
 ### Info
 - JDBC Console Application
 - [Sonarcloud](https://sonarcloud.io/summary/overall?id=Intzer_bsuir-ciir-java&branch=jdbc)
+- Estimation: 6 hours
+- Total: 6 hours
 
 ### Screenshots
 ![screen1](https://github.com/intzer/bsuir-ciir-java/blob/jdbc/s1.png?raw=true)
