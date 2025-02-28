@@ -15,7 +15,7 @@
 - Estimation: 4 hours
 - Total: 8 hours
 ![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s1.png?raw=true)
-![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s2.png?raw=true)
+![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s21.png?raw=true)
 ![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s3.png?raw=true)
 ![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s4.png?raw=true)
 ![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s5.png?raw=true)
