@@ -11,6 +11,16 @@
 - Scheme:
 ![bd_scheme](https://github.com/intzer/bsuir-ciir-java/blob/main/bd_scheme.png?raw=true)
 
+### JSP (layout/header/footer and pages home/signup/code/cabinet)
+- Estimation: 4 hours
+- Total: 8 hours
+![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s1.png?raw=true)
+![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s2.png?raw=true)
+![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s3.png?raw=true)
+![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s4.png?raw=true)
+![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s5.png?raw=true)
+
+
 ### Crud on Spring & Hibernate
 - Estimation: 40 hours
 - Total: -

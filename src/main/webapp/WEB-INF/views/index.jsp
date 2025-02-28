@@ -17,7 +17,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="ratio ratio-16x9">
-                                    <img src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" title="YouTube video" allowfullscreen></img>
+                                    <img src="${moto.type.image}">
                                 </div>
                                 <p class="mb-0">Engine: ${moto.type.engineVolume} cm</p>
                                 <p class="mb-0">Max Speed: ${moto.type.maxSpeed} km/hr</p>
