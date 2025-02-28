@@ -11,6 +11,6 @@
 ![screen6](https://github.com/intzer/bsuir-ciir-java/blob/jdbc/s6.png?raw=true)
 ---
 ![screen7](https://github.com/intzer/bsuir-ciir-java/blob/jdbc/s7.png?raw=true)
-![screen8](https://github.com/intzer/bsuir-ciir-java/blob/jdbc/s7.png?raw=true)
-![screen9](https://github.com/intzer/bsuir-ciir-java/blob/jdbc/s7.png?raw=true)
-![screen10](https://github.com/intzer/bsuir-ciir-java/blob/jdbc/s7.png?raw=true)
+![screen8](https://github.com/intzer/bsuir-ciir-java/blob/jdbc/s8.png?raw=true)
+![screen9](https://github.com/intzer/bsuir-ciir-java/blob/jdbc/s9.png?raw=true)
+![screen10](https://github.com/intzer/bsuir-ciir-java/blob/jdbc/s10.png?raw=true)
