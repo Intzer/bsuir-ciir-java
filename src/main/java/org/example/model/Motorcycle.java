@@ -37,19 +37,15 @@ public class Motorcycle {
     public String getVin() { return vin; }
     public void setVin(String vin) { this.vin = vin; }
     public LocalDateTime getCreatedAt() { return createdAt; }
-
     public MotorcycleType getType() {
         return type;
     }
-
     public void setType(MotorcycleType type) {
         this.type = type;
     }
-
     public MotorcycleColor getColor() {
         return color;
     }
-
     public void setColor(MotorcycleColor color) {
         this.color = color;
     }
