@@ -21,4 +21,12 @@ public class MotorcycleService {
     public List<Motorcycle> getAllMotorcycles() {
         return motorcycleRepository.findAll();
     }
+
+    public List<Motorcycle> getAllFreeMotorcycles() {
+        return motorcycleRepository.getAllFreeMotorcycles();
+    }
+
+    public Optional<Motorcycle> getFreeMotorcycleById(Long id) {
+        return motorcycleRepository.getFreeMotorcycleById(id);
+    }
 }

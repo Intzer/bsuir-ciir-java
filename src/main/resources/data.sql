@@ -21,3 +21,12 @@ INSERT INTO motorcycles (type_id, created_at, vin, color_id) VALUES
 (3, NOW(), 'WB10G1200KZ987654', 3),
 (4, NOW(), 'ZDM12345678901234', 4),
 (5, NOW(), 'SMTTC10K5NT123789', 5);
+
+-- Добавляем пользователя
+INSERT INTO users (balance, enter_code_expired_at, enter_code, phone_number) VALUES
+(100.00, NOW(), '1234', 1);
+
+-- Добавляем аренды
+INSERT INTO rentals (motorcycle_id, user_id, created_at, expired_at) VALUES
+(1, 1, '2025-03-01 09:51:22.193605', '2025-03-02 09:51:22.193605'),
+(1, 1, NOW(), '2025-03-04 09:51:22.193605');

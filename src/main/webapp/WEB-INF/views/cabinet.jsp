@@ -3,9 +3,11 @@
 <div class="card">
     <div class="card-body">
         <div>
-            <h1 class="h3">Cabinet [<a href="/logout">Log out</a>]</h1>
+            <h3>Cabinet</h3>
             <div>
-                Hi
+                Balance: ${balance} <a href="#">Deposit</a><br>
+                Your phone: ${phoneNumber}<br>
+                Your registed date: ${createdAt}<br>
             </div>
         </div>
     </div>

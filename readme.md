@@ -19,7 +19,10 @@
 ![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s3.png?raw=true)
 ![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s4.png?raw=true)
 ![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s5.png?raw=true)
-
+![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s7.png?raw=true)
+![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s8.png?raw=true)
+![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s9.png?raw=true)
+![jsp](https://github.com/intzer/bsuir-ciir-java/blob/main/screenshots/s10.png?raw=true)
 
 ### Crud on Spring & Hibernate
 - Estimation: 40 hours

@@ -3,6 +3,7 @@ package org.example.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
@@ -25,27 +26,22 @@ public class Rental {
     @JoinColumn(name = "motorcycle_id", nullable = false) // Внешний ключ на `motorcycles`
     private Motorcycle motorcycle;
 
-    @UpdateTimestamp
+    @Column(nullable = false)
     private LocalDateTime expiredAt;
 
-    // Конструкторы, геттеры и сеттеры
     public Rental() {}
 
     public Long getId() { return id; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getExpiredAt() { return expiredAt; }
+    public void setExpiredAt(LocalDateTime expiredAt) { this.expiredAt = expiredAt; }
     public Motorcycle getMotorcycle() {
         return motorcycle;
     }
-
     public void setMotorcycle(Motorcycle motorcycle) {
         this.motorcycle = motorcycle;
     }
-
-    public User getUser() {
-        return user;
-    }
-
+    public User getUser() {return user; }
     public void setUser(User user) {
         this.user = user;
     }
