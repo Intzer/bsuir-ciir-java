@@ -24,19 +24,6 @@ public class CodeController {
         this.userService = userService;
     }
 
-    @GetMapping("/code")
-    public String index(@RequestParam(value = "status", required = false) Integer status, Model model, HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
-        if (userId == null) {
-            return "redirect:/auth"; // Если нет ID, отправляем снова на авторизацию
-        }
-
-        model.addAttribute("status", status); // передаем status в модель
-        model.addAttribute("page_title", "Enter code");
-        model.addAttribute("page", "../code");
-        return "layouts/main"; // Используем шаблон, а он уже вставит home.jsp
-    }
-
     @PostMapping("/code")
     public String store(@RequestParam String code, String action, HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
