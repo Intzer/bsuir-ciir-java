@@ -6,6 +6,7 @@ import org.example.model.Motorcycle;
 import org.example.service.MotorcycleService;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
@@ -27,21 +28,8 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @GetMapping("/auth")
-    public String index(Model model) {
-        model.addAttribute("page_title", "Sign in");
-        model.addAttribute("page", "../login");
-        return "layouts/main"; // Используем шаблон, а он уже вставит home.jsp
-    }
-
-    @GetMapping("/logout")
-    public String logout(Model model, HttpSession session) {
-        session.removeAttribute("isLogged");
-        return "redirect:/";
-    }
-
     @PostMapping("/auth")
-    public String store(@RequestParam String phoneNumber, HttpSession session) {
+    public ResponseEntity<Void> store(@RequestParam String phoneNumber, HttpSession session) {
         User user = userService.getUserByPhoneNumber(phoneNumber)
                 .orElseGet(() -> userService.createUser(new User(phoneNumber)));
 
@@ -51,6 +39,6 @@ public class AuthController {
 
         session.setAttribute("userId", user.getId());
 
-        return "redirect:/code";
+        return ResponseEntity.ok().build();
     }
 }
