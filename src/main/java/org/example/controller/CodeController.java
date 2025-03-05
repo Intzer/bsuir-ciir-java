@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.example.model.User;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -25,43 +27,34 @@ public class CodeController {
     }
 
     @PostMapping("/code")
-    public String store(@RequestParam String code, String action, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> store(@RequestParam String code, String action, HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
-            return "redirect:/auth"; // Если нет ID, отправляем снова на авторизацию
+            return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
         }
 
         Optional<User> userOptional = userService.getUserById(userId);
         if (!userOptional.isPresent()) {
-            return "redirect:/auth";
+            return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
         }
 
         User user = userOptional.get();
 
         if (action.equals("enter")) {
-//            if (user.getEnterCodeExpiredAt().isBefore(LocalDateTime.now())) {
-//                return "redirect:/code?status=2";
-//            }
-//
-//            if (!user.getEnterCode().equals(code)) {
-//                return "redirect:/code?status=1";
-//            }
-
             session.setAttribute("isLogged", true);
 
-            return "redirect:/cabinet";
+            return ResponseEntity.ok().body(Map.of("status", 1, "message", "Авторизованы."));
         } else if (action.equals("resend")) {
             if (user.getEnterCodeExpiredAt().isAfter(LocalDateTime.now())) {
-                return "redirect:/code?status=4";
+                return ResponseEntity.ok().body(Map.of("status", 0, "message", "Время действия кода ещё не вышло."));
             }
 
             user.setEnterCode(String.valueOf(ThreadLocalRandom.current().nextInt(100000, 999999)));
             user.setEnterCodeExpiredAt(LocalDateTime.now().plusMinutes(5));
             userService.saveUser(user);
 
-            return "redirect:/code?status=5";
-        }
+            return ResponseEntity.ok().body(Map.of("status", 1, "message", "Новый код был отправлен."));        }
 
-        return "redirect:/code?error=3";
+        return ResponseEntity.ok().body(Map.of("status", 0, "message", "Неизвестное действие."));
     }
 }

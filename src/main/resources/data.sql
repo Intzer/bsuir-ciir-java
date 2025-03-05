@@ -29,4 +29,4 @@ INSERT INTO users (balance, enter_code_expired_at, enter_code, phone_number) VAL
 -- Добавляем аренды
 INSERT INTO rentals (motorcycle_id, user_id, created_at, expired_at) VALUES
 (1, 1, '2025-03-01 09:51:22.193605', '2025-03-02 09:51:22.193605'),
-(1, 1, NOW(), '2025-03-04 09:51:22.193605');
+(1, 1, NOW(), '2025-03-10 09:51:22.193605');

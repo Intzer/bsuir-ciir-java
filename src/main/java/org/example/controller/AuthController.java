@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -29,7 +30,11 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<Void> store(@RequestParam String phoneNumber, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> store(@RequestParam String phoneNumber, HttpSession session) {
+        if (phoneNumber.isBlank()) {
+            return ResponseEntity.ok(Map.of("status", 0, "message", "Не указан телефон."));
+        }
+
         User user = userService.getUserByPhoneNumber(phoneNumber)
                 .orElseGet(() -> userService.createUser(new User(phoneNumber)));
 
@@ -39,6 +44,12 @@ public class AuthController {
 
         session.setAttribute("userId", user.getId());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(Map.of("status", 1, "message", "ok"));
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout(HttpSession session) {
+        session.removeAttribute("userId");
+        return null;
     }
 }
