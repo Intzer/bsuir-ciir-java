@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-body">
+    <div>
+      <h3>Rent motorcycles</h3>
+
+      <div *ngIf="isLoading" class="alert alert-info">
+        Загрузка...
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="!isLoading && !errorMessage">
+        <div class="row">
+          <div *ngFor="let moto of motorcycles" class="col-md-6 col-lg-4 col-xl-3">
+            <div class="card mb-3">
+              <div class="card-header">
+                {{ moto.type.name }}
+              </div>
+              <div class="card-body">
+                <div class="ratio ratio-16x9">
+                  <img src="{{ moto.type.image }}">
+                </div>
+                <p class="mb-0">Engine: {{ moto.type.engineVolume }} cm</p>
+                <p class="mb-0">Max Speed: {{ moto.type.maxSpeed }} km/hr</p>
+                <p class="mb-0">Fuel Rate: {{ moto.type.fuelRate }} l/100km</p>
+                <p class="mb-0">Color: {{ moto.color.name }}</p>
+                <p class="mb-0">Vin: {{ moto.vin }} {{ moto.id }} </p>
+
+                <form [formGroup]="rentForm">
+                  <button type="button" class="w-100 btn-success" (click)="onSubmit(moto.id)">Rent</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

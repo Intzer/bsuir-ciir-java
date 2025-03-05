@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-lg-6 col-xl-4 offset-lg-3 offset-xl-4">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h1 class="h3">Enter code from sms message (valid for 5 min)</h1>
+          <form [formGroup]="codeForm">
+            <div class="mb-3">
+              <label for="code">Code:</label>
+              <input type="text" class="form-control" id="code" formControlName="code" placeholder="000000">
+            </div>
+            <button type="button" class="btn btn-outline-success me-2" (click)="onSubmit('enter')">Enter</button>
+            <button type="button" class="btn btn-outline-primary" (click)="onSubmit('resend')">Resend Code</button>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

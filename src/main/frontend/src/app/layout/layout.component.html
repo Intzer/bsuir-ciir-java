@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+<header class="p-3 bg-dark text-white">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a routerLink="/" class="nav-link px-2 text-white">Home</a></li>
+        <li *ngIf="isLogged"><a routerLink="/rent" class="nav-link px-2 text-white">Rent</a></li>
+        <li *ngIf="isLogged"><a routerLink="/active" class="nav-link px-2 text-white">Active rents</a></li>
+        <li *ngIf="isLogged"><a routerLink="/history" class="nav-link px-2 text-white">History</a></li>
+      </ul>
+
+      <div class="text-end">
+          <div *ngIf="isLogged" class="d-flex align-items-center">
+            <a routerLink="/cabinet" class="btn btn-light me-2">Cabinet</a>
+            <a routerLink="/logout" class="btn btn-danger">Log out</a>
+          </div>
+
+          <div>
+            <a *ngIf="!isLogged" [routerLink]="['/auth']" class="btn btn-light">Sign in</a>
+          </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="my-3">
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</main>
+
+<div class="container">
+  <footer class="py-3 my-4 border-top">
+    <p class="text-center text-muted">&#64;2025 Rental Motorcycle Company, Inc</p>
+  </footer>
+</div>
+
+</body>
+</html>
