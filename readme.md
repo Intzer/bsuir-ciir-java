@@ -26,4 +26,4 @@
 
 ### Crud on Spring & Hibernate
 - Estimation: 40 hours
-- Total: -
+- Total: 24 hours
