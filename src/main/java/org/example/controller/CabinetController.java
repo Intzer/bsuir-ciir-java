@@ -9,15 +9,19 @@ import org.example.service.MotorcycleService;
 import org.example.service.RentalService;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -27,107 +31,102 @@ public class CabinetController {
     private final UserService userService;
     private final MotorcycleService motorcycleService;
     private final RentalService rentalService;
+    private final RentalRepository rentalRepository;
 
     @Autowired
     public CabinetController(UserService userService, RentalService rentalService, MotorcycleService motorcycleService, RentalRepository rentalRepository) {
         this.userService = userService;
         this.rentalService = rentalService;
         this.motorcycleService = motorcycleService;
+        this.rentalRepository = rentalRepository;
     }
 
-    @GetMapping("/cabinet")
-    public String cabinetIndex(Model model, HttpSession session) {
-        Boolean isLogged = (Boolean) session.getAttribute("isLogged");
-        if (isLogged == null || !isLogged) {
-            return "redirect:/auth"; // Если нет ID, отправляем снова на авторизацию
+    @GetMapping("/info")
+    public ResponseEntity<Map<String, Object>> getUserInfo(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
         }
 
-        Long userId = (Long) session.getAttribute("userId");
         Optional<User> userOptional = userService.getUserById(userId);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
+        }
+
         User user = userOptional.get();
 
-        model.addAttribute("page_title", "Cabinet");
-        model.addAttribute("page", "../cabinet");
-        model.addAttribute("balance", user.getBalance());
-        model.addAttribute("phoneNumber", user.getPhoneNumber());
-        model.addAttribute("createdAt", user.getCreatedAt());
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("phone", user.getPhoneNumber());
+        userInfo.put("balance", user.getBalance());
 
-        return "layouts/main";
+        return ResponseEntity.ok(userInfo);
     }
 
-    @GetMapping("/active")
-    public String activeIndex(Model model, HttpSession session) {
+    @GetMapping("/api/rentals")
+    @ResponseBody
+    public ResponseEntity<Object> activeIndex(Model model, HttpSession session) {
         Boolean isLogged = (Boolean) session.getAttribute("isLogged");
         if (isLogged == null || !isLogged) {
-            return "redirect:/auth"; // Если нет ID, отправляем снова на авторизацию
+            return ResponseEntity.status(401).body("Не авторизован.");
         }
 
         Long userId = (Long) session.getAttribute("userId");
         List<Rental> rentals = rentalService.getUserRentals(userId);
 
-        model.addAttribute("page_title", "Active");
-        model.addAttribute("page", "../active");
-        model.addAttribute("rentals", rentals);
-
-        return "layouts/main";
+        return ResponseEntity.ok(rentals);
     }
 
-    @GetMapping("/history")
-    public String historyIndex(Model model, HttpSession session) {
+    @GetMapping("/api/history")
+    public ResponseEntity<Object> historyIndex(Model model, HttpSession session) {
         Boolean isLogged = (Boolean) session.getAttribute("isLogged");
         if (isLogged == null || !isLogged) {
-            return "redirect:/auth"; // Если нет ID, отправляем снова на авторизацию
+            return ResponseEntity.status(401).body("Не авторизован.");
         }
 
         Long userId = (Long) session.getAttribute("userId");
         List<Rental> historyRentals = rentalService.getUserHistoryRentals(userId);
 
-        model.addAttribute("page_title", "History");
-        model.addAttribute("page", "../history");
-        model.addAttribute("historyRentals", historyRentals);
-
-        return "layouts/main";
+        return ResponseEntity.ok(historyRentals);
     }
 
-    @GetMapping("/rent")
-    public String rentIndex(Model model, HttpSession session) {
+    @GetMapping("/api/freemotorcycles")
+    public ResponseEntity<Object> rentIndex(Model model, HttpSession session) {
         Boolean isLogged = (Boolean) session.getAttribute("isLogged");
         if (isLogged == null || !isLogged) {
-            return "redirect:/auth"; // Если нет ID, отправляем снова на авторизацию
+            return ResponseEntity.status(401).body("Не авторизован.");
         }
 
         List<Motorcycle> motorcycles = motorcycleService.getAllFreeMotorcycles();
 
-        model.addAttribute("page_title", "Rent");
-        model.addAttribute("page", "../rent");
-        model.addAttribute("motorcycles", motorcycles);
-
-        return "layouts/main";
+        return ResponseEntity.ok(motorcycles);
     }
 
     @PostMapping("/rent")
-    public String rentStore(@RequestParam Long motorcycleId, Model model, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> rentStore(@RequestParam Long motorcycleId, Model model, HttpSession session) {
+        System.out.println("motorcycleId: " + motorcycleId);
         Boolean isLogged = (Boolean) session.getAttribute("isLogged");
         if (isLogged == null || !isLogged) {
-            return "redirect:/auth"; // Если нет ID, отправляем снова на авторизацию
+            return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
         }
 
+        System.out.println("1");
         Long userId = (Long) session.getAttribute("userId");
         Optional<User> userOptional = userService.getUserById(userId);
         if (!userOptional.isPresent()) {
-            return "redirect:/auth";
+            return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
         }
-
+        System.out.println("2");
         User user = userOptional.get();
 
         Optional<Motorcycle> motorcycleOptional = motorcycleService.getFreeMotorcycleById(motorcycleId);
         if (!motorcycleOptional.isPresent()) {
-            return "redirect:/rent";
+            return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Данный мотоцикл уже недоступен."));
         }
 
+        System.out.println("3");
         Motorcycle motorcycle = motorcycleOptional.get();
         rentalService.addRental(user, motorcycle);
 
-        return "redirect:/active";
+        return ResponseEntity.ok().body(Map.of("status", 1, "message", "Арендовали.."));
     }
 }

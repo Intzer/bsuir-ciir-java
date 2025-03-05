@@ -5,8 +5,8 @@ import org.example.service.MotorcycleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.ui.Model;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
@@ -19,14 +19,9 @@ public class HomeController {
         this.motorcycleService = motorcycleService;
     }
 
-    @GetMapping("/")
-    public String index(Model model) {
-
-        List<Motorcycle> motorcycles = motorcycleService.getAllMotorcycles();
-
-        model.addAttribute("page_title", "Motorcycles Rental Company");
-        model.addAttribute("page", "../index");
-        model.addAttribute("motorcycles", motorcycles);
-        return "layouts/main"; // Используем шаблон, а он уже вставит home.jsp
+    @GetMapping("/api/motorcycles")
+    @ResponseBody // Возвращаем JSON
+    public List<Motorcycle> getMotorcycles() {
+        return motorcycleService.getAllMotorcycles();
     }
 }
