@@ -28,10 +28,9 @@ export class AuthComponent {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     }).subscribe({
       next: (response) => {
+        alert(response.message);
         if (response.status == 1) {
           this.router.navigate(['/code']);
-        } else {
-          alert(response.message);
         }
       },
       error: (error) => {

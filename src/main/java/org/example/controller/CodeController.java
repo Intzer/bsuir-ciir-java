@@ -41,6 +41,14 @@ public class CodeController {
         User user = userOptional.get();
 
         if (action.equals("enter")) {
+            if (user.getEnterCodeExpiredAt().isBefore(LocalDateTime.now())) {
+                return ResponseEntity.ok().body(Map.of("status", 0, "message", "Время действия кода вышло."));
+            }
+
+            if (!user.getEnterCode().equals(code)) {
+                return ResponseEntity.ok().body(Map.of("status", 0, "message", "Неверный код."));
+            }
+
             session.setAttribute("isLogged", true);
 
             return ResponseEntity.ok().body(Map.of("status", 1, "message", "Авторизованы."));

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Component({
   selector: 'app-cabinet',
@@ -13,14 +13,30 @@ export class CabinetComponent implements OnInit {
 
   constructor(private http: HttpClient) {}
 
+  deposit() {
+    let amount = Number(prompt('Введите сумму пополнения: ', ''));
+    if (!amount) {
+      return;
+    }
+
+    const formData = new HttpParams()
+      .set('amount', amount);
+
+    this.http.post<{ status: number; message: string }>('/deposit', formData).subscribe({
+      next: (response) => {
+        if (response.status == 1) {
+          this.userInfo.balance += amount;
+        }
+
+        alert(response.message);
+      }
+    });
+  }
+
   ngOnInit() {
-    // Делаем GET-запрос непосредственно в компоненте
     this.http.get<any>('/info').subscribe({
       next: (data) => {
         this.userInfo = data; // Сохраняем полученные данные в переменную
-      },
-      error: (err) => {
-        console.error('Ошибка при получении данных:', err);
       }
     });
   }

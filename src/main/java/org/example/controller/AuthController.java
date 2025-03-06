@@ -38,13 +38,14 @@ public class AuthController {
         User user = userService.getUserByPhoneNumber(phoneNumber)
                 .orElseGet(() -> userService.createUser(new User(phoneNumber)));
 
-        user.setEnterCode(String.valueOf(ThreadLocalRandom.current().nextInt(100000, 999999)));
+        String code = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 999999));
+        user.setEnterCode(code);
         user.setEnterCodeExpiredAt(LocalDateTime.now().plusMinutes(5));
         userService.saveUser(user);
 
         session.setAttribute("userId", user.getId());
 
-        return ResponseEntity.ok(Map.of("status", 1, "message", "ok"));
+        return ResponseEntity.ok(Map.of("status", 1, "message", code));
     }
 
     @GetMapping("/logout")

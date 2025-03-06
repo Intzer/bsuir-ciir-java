@@ -3,8 +3,8 @@
     <div>
       <h3>Cabinet</h3>
       <div>
-        Balance: {{ userInfo.balance || 'N/A' }}<br>
-        Your phone: {{ userInfo.phone || 'N/A' }}<br>
+        Balance: {{ userInfo.balance }} <div class="badge bg-success" (click)="deposit()">deposit</div><br>
+        Your phone: {{ userInfo.phone }}<br>
       </div>
     </div>
   </div>

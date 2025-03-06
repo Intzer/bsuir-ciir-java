@@ -5,6 +5,7 @@ import org.example.model.Motorcycle;
 import org.example.model.Rental;
 import org.example.model.User;
 import org.example.repository.RentalRepository;
+import org.example.repository.UserRepository;
 import org.example.service.MotorcycleService;
 import org.example.service.RentalService;
 import org.example.service.UserService;
@@ -32,13 +33,15 @@ public class CabinetController {
     private final MotorcycleService motorcycleService;
     private final RentalService rentalService;
     private final RentalRepository rentalRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CabinetController(UserService userService, RentalService rentalService, MotorcycleService motorcycleService, RentalRepository rentalRepository) {
+    public CabinetController(UserService userService, RentalService rentalService, MotorcycleService motorcycleService, RentalRepository rentalRepository, UserRepository userRepository) {
         this.userService = userService;
         this.rentalService = rentalService;
         this.motorcycleService = motorcycleService;
         this.rentalRepository = rentalRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/info")
@@ -103,19 +106,16 @@ public class CabinetController {
 
     @PostMapping("/rent")
     public ResponseEntity<Map<String, Object>> rentStore(@RequestParam Long motorcycleId, Model model, HttpSession session) {
-        System.out.println("motorcycleId: " + motorcycleId);
         Boolean isLogged = (Boolean) session.getAttribute("isLogged");
         if (isLogged == null || !isLogged) {
             return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
         }
 
-        System.out.println("1");
         Long userId = (Long) session.getAttribute("userId");
         Optional<User> userOptional = userService.getUserById(userId);
         if (!userOptional.isPresent()) {
             return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
         }
-        System.out.println("2");
         User user = userOptional.get();
 
         Optional<Motorcycle> motorcycleOptional = motorcycleService.getFreeMotorcycleById(motorcycleId);
@@ -123,10 +123,33 @@ public class CabinetController {
             return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Данный мотоцикл уже недоступен."));
         }
 
-        System.out.println("3");
         Motorcycle motorcycle = motorcycleOptional.get();
         rentalService.addRental(user, motorcycle);
 
         return ResponseEntity.ok().body(Map.of("status", 1, "message", "Арендовали.."));
+    }
+
+    @PostMapping("/deposit")
+    public ResponseEntity<Map<String, Object>> depositStore(@RequestParam int amount, HttpSession session) {
+        Boolean isLogged = (Boolean) session.getAttribute("isLogged");
+        if (isLogged == null || !isLogged) {
+            return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
+        }
+
+        Long userId = (Long) session.getAttribute("userId");
+        Optional<User> userOptional = userService.getUserById(userId);
+        if (!userOptional.isPresent()) {
+            return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
+        }
+        User user = userOptional.get();
+
+        if (amount <= 0) {
+            return ResponseEntity.ok().body(Map.of("status", 0, "message", "Сумма пополнения должна быть больше нуля."));
+        }
+
+        user.setBalance(user.getBalance() + amount);
+        userRepository.save(user);
+
+        return ResponseEntity.ok().body(Map.of("status", 1, "message", "Баланс успешно пополнен."));
     }
 }
