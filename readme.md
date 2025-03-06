@@ -6,4 +6,4 @@
 
 ### Angular 
 - Estimation: 8 hours
-- Total: 12 hours
+- Total: 16 hours
