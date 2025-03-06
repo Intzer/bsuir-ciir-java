@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import {useAuth} from "../AuthContext";
 
 const Header = () => {
-    const [isLogged, setIsLogged] = useState(false);
+    const { isLogged, setIsLogged } = useAuth();
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        const loggedStatus = localStorage.getItem('isLogged') === 'true'; // Проверка авторизации
-        setIsLogged(loggedStatus);
-    }, []);
+    const Logout = (e) => {
+        localStorage.setItem("isLogged", "false");
+        setIsLogged(false);
+        navigate('/');
+    };
 
     return (
         <header className="p-3 bg-dark text-white">
@@ -29,7 +32,7 @@ const Header = () => {
                         {isLogged ? (
                             <div className="d-flex align-items-center">
                                 <Link to="/cabinet" className="btn btn-light me-2">Cabinet</Link>
-                                <Link to="/logout" className="btn btn-danger">Log out</Link>
+                                <div onClick={Logout} className="btn btn-danger">Log out</div>
                             </div>
                         ) : (
                             <Link to="/auth" className="btn btn-light">Sign in</Link>

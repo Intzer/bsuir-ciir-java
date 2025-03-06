@@ -73,7 +73,7 @@ export class RentComponent implements OnInit {
     this.motorcycleService.getFreeMotorcycles().subscribe({
       next: (data) => {
         this.motorcycles = data;
-        this.isLoading = false;
+        this.isLoading = false;openModal
       },
       error: (err) => {
         console.error('Ошибка при загрузке мотоциклов', err);

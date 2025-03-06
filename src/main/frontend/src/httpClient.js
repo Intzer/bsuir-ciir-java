@@ -1,15 +1,4 @@
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
-
-// Функция для обработки навигации
-const useAuthRedirect = () => {
-    const navigate = useNavigate();
-
-    // Обрабатываем редирект на страницу авторизации
-    return () => {
-        navigate('/auth');
-    };
-};
 
 const httpClient = axios.create();
 
@@ -22,9 +11,8 @@ httpClient.interceptors.response.use(
     (error) => {
         // Перехватываем ошибку, если ответ с кодом 401
         if (error.response && error.response.status === 401) {
-            const redirectToAuth = useAuthRedirect();
-            // Перенаправляем на страницу авторизации
-            redirectToAuth(); // Вызываем редирект
+            localStorage.setItem('isLogged', "false")
+            window.location.href = '/auth'; // Если пользователь не авторизован, редиректим на страницу логина
         }
 
         // Возвращаем ошибку, чтобы она была доступна в компоненте

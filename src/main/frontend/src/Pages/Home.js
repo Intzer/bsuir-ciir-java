@@ -10,7 +10,7 @@ const Home = () => {
         // Функция для получения мотоциклов
         const fetchMotorcycles = async () => {
             try {
-                const response = await httpClient.get('http://127.0.0.1:8080/api/motorcycles'); // Замените URL на ваш API
+                const response = await httpClient.get('/api/motorcycles'); // Замените URL на ваш API
                 setMotorcycles(response.data); // Сохраняем полученные данные в состоянии
             } catch (error) {
                 console.error('Error fetching motorcycles:', error);
