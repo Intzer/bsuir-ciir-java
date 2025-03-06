@@ -3,10 +3,12 @@ package org.example.controller;
 import jakarta.servlet.http.HttpSession;
 import org.example.model.Motorcycle;
 import org.example.model.Rental;
+import org.example.model.RentalDuration;
 import org.example.model.User;
 import org.example.repository.RentalRepository;
 import org.example.repository.UserRepository;
 import org.example.service.MotorcycleService;
+import org.example.service.RentalDurationService;
 import org.example.service.RentalService;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +35,17 @@ public class CabinetController {
     private final MotorcycleService motorcycleService;
     private final RentalService rentalService;
     private final RentalRepository rentalRepository;
+    private final RentalDurationService rentalDurationService;
     private final UserRepository userRepository;
 
     @Autowired
-    public CabinetController(UserService userService, RentalService rentalService, MotorcycleService motorcycleService, RentalRepository rentalRepository, UserRepository userRepository) {
+    public CabinetController(UserService userService, RentalService rentalService, MotorcycleService motorcycleService, RentalRepository rentalRepository, UserRepository userRepository, RentalDurationService rentalDurationService) {
         this.userService = userService;
         this.rentalService = rentalService;
         this.motorcycleService = motorcycleService;
         this.rentalRepository = rentalRepository;
         this.userRepository = userRepository;
+        this.rentalDurationService = rentalDurationService;
     }
 
     @GetMapping("/info")
@@ -79,6 +83,13 @@ public class CabinetController {
         return ResponseEntity.ok(rentals);
     }
 
+    @GetMapping("/api/rentaldurations")
+    @ResponseBody
+    public ResponseEntity<Object> rentalDurationsIndex(HttpSession session) {
+        List<RentalDuration> rentalDurations = rentalDurationService.findAll();
+        return ResponseEntity.ok(rentalDurations);
+    }
+
     @GetMapping("/api/history")
     public ResponseEntity<Object> historyIndex(Model model, HttpSession session) {
         Boolean isLogged = (Boolean) session.getAttribute("isLogged");
@@ -105,26 +116,45 @@ public class CabinetController {
     }
 
     @PostMapping("/rent")
-    public ResponseEntity<Map<String, Object>> rentStore(@RequestParam Long motorcycleId, Model model, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> rentStore(@RequestParam Long rentalDurationId, @RequestParam Long motorcycleId, Model model, HttpSession session) {
         Boolean isLogged = (Boolean) session.getAttribute("isLogged");
         if (isLogged == null || !isLogged) {
+            System.out.println("h5");
             return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
         }
 
         Long userId = (Long) session.getAttribute("userId");
         Optional<User> userOptional = userService.getUserById(userId);
         if (!userOptional.isPresent()) {
+            System.out.println("h4");
             return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Не авторизован."));
         }
         User user = userOptional.get();
 
         Optional<Motorcycle> motorcycleOptional = motorcycleService.getFreeMotorcycleById(motorcycleId);
         if (!motorcycleOptional.isPresent()) {
-            return ResponseEntity.status(401).body(Map.of("status", 0, "message", "Данный мотоцикл уже недоступен."));
+            System.out.println("h3");
+            return ResponseEntity.ok().body(Map.of("status", 0, "message", "Данный мотоцикл уже недоступен."));
+        }
+
+        Optional<RentalDuration> rentalDurationOptional = rentalDurationService.findById(rentalDurationId);
+        if (!rentalDurationOptional.isPresent()) {
+            System.out.println("h2");
+            return ResponseEntity.ok().body(Map.of("status", 0, "message", "Данный срок недоступен."));
         }
 
         Motorcycle motorcycle = motorcycleOptional.get();
-        rentalService.addRental(user, motorcycle);
+        RentalDuration rentalDuration = rentalDurationOptional.get();
+
+        if (user.getBalance() < rentalDuration.getCost()) {
+            System.out.println("h1");
+            return ResponseEntity.ok().body(Map.of("status", 0, "message", "У вас недостаточно средств."));
+        }
+
+        user.setBalance(user.getBalance() - rentalDuration.getCost());
+        userRepository.save(user);
+
+        rentalService.addRental(user, motorcycle, rentalDuration);
 
         return ResponseEntity.ok().body(Map.of("status", 1, "message", "Арендовали.."));
     }

@@ -22,8 +22,8 @@
                 <div class="ratio ratio-16x9">
                   <img src="{{ rental.motorcycle.type.image }}">
                 </div>
-                <p class="mb-0">Start: {{ rental.createdAt }}</p>
-                <p class="mb-0">Expired: {{ rental.expiredAt }} km/hr</p>
+                <p class="mb-0">Start: {{ rental.createdAt | date: 'd MMMM y, HH:mm' }}</p>
+                <p class="mb-0">Expired: {{ rental.expiredAt | date: 'd MMMM y, HH:mm' }}</p>
                 <p class="mb-0">Vin: {{ rental.motorcycle.vin }} </p>
               </div>
             </div>

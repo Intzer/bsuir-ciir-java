@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {CommonModule} from '@angular/common';
+import {RentaldurationService} from '../services/rentalduration.service';
 
 @Component({
   selector: 'app-rent',
@@ -17,27 +18,30 @@ import {CommonModule} from '@angular/common';
 export class RentComponent implements OnInit {
   rentForm: FormGroup;
   motorcycles: any[] = [];
+  rentalDurations: any[] = [];
   isLoading = true;
   errorMessage: string | null = null;
   motorcycleId: number | null = null;
+  selectedMotoId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private http: HttpClient,
-    private motorcycleService: MotorcycleService
+    private motorcycleService: MotorcycleService,
+    private rentalDurationService: RentaldurationService
   ) {
     this.rentForm = this.fb.group({
       motorcycleId: [0, Validators.required],   // Поле для ID мотоцикла
-      rentalDuration: [1, Validators.required], // Поле для длительности аренды
-      rentalDate: ['', Validators.required],    // Поле для даты аренды
+      rentalDurationId: [1, Validators.required], // Поле для длительности аренды
     });
   }
 
-  openModal(motorcycleId: number) {
-    console.log("open");
-    this.motorcycleId = motorcycleId;
-    this.rentForm.patchValue({ motorcycleId: this.motorcycleId }); // Заполняем форму ID
+  openModal(motoId: number) {
+    this.selectedMotoId = motoId;
+    this.rentForm.patchValue({
+      motorcycleId: motoId
+    });
   }
 
   onSubmitPost() {
@@ -45,11 +49,10 @@ export class RentComponent implements OnInit {
       return;
     }
 
-    const { motorcycleId, rentalDuration, rentalDate } = this.rentForm.value;
+    const { motorcycleId, rentalDurationId, rentalDate } = this.rentForm.value;
     const formData = new HttpParams()
-      .set('motorcycleId', motorcycleId.toString())
-      .set('rentalDuration', rentalDuration.toString())
-      .set('rentalDate', rentalDate);
+      .set('rentalDurationId', rentalDurationId.toString())
+      .set('motorcycleId', motorcycleId.toString());
 
     this.http.post<{ status: number; message: string }>('/rent', formData, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -77,6 +80,12 @@ export class RentComponent implements OnInit {
         this.errorMessage = 'Не удалось загрузить данные.';
         this.isLoading = false;
       },
+    });
+
+    this.rentalDurationService.getRentalDurations().subscribe({
+      next: (data) => {
+        this.rentalDurations = data;
+      }
     });
   }
 }

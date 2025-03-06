@@ -28,47 +28,26 @@
                                 <p class="mb-0">Color: {{ moto.color.name }}</p>
                                 <p class="mb-0">Vin: {{ moto.vin }} {{ moto.id }} </p>
 
-                                <button class="w-100 btn-success" data-bs-toggle="modal" data-bs-target="#details_modal" (click)="openModal(moto.id)">Rent</button>
+                                <button class="w-100 btn btn-success" (click)="openModal(moto.id)">Rent</button>
+
+                                <div *ngIf="selectedMotoId === moto.id">
+                                  <form [formGroup]="rentForm" (ngSubmit)="onSubmitPost()">
+                                    <input type="hidden" formControlName="motorcycleId"/>
+
+                                    <div class="form-group">
+                                      <label>Rental Duration</label>
+                                      <select class="form-control" formControlName="rentalDurationId" required>
+                                        <option *ngFor="let rental of rentalDurations" [value]="rental.id">
+                                          {{ rental.days }} дней - ${{ rental.cost }}
+                                        </option>
+                                      </select>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success w-100 mt-2">Submit</button>
+                                  </form>
+                                </div>
+
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Модальное окно -->
-            <div class="modal" tabindex="-1" role="dialog" id="details_modal">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Motorcycle Details</h5>
-                            <button type="button" class="close" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form [formGroup]="rentForm" (ngSubmit)="onSubmitPost()">
-                                <input type="hidden" formControlName="motorcycleId" />
-
-                                <!-- Поле select -->
-                                <div class="form-group">
-                                    <label for="rentalDuration">Rental Duration</label>
-                                    <select class="form-control" formControlName="rentalDuration" id="rentalDuration" required>
-                                        <option value="1">1 day</option>
-                                        <option value="3">3 days</option>
-                                        <option value="7">7 days</option>
-                                        <option value="30">30 days</option>
-                                    </select>
-                                </div>
-
-                                <!-- Поле input type="date" -->
-                                <div class="form-group">
-                                    <label for="rentalDate">Rental Start Date</label>
-                                    <input type="date" class="form-control" formControlName="rentalDate" id="rentalDate" required />
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>

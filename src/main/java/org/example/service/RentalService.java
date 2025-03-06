@@ -2,11 +2,13 @@ package org.example.service;
 
 import org.example.model.Motorcycle;
 import org.example.model.Rental;
+import org.example.model.RentalDuration;
 import org.example.model.User;
 import org.example.repository.MotorcycleRepository;
 import org.example.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,11 +31,11 @@ public class RentalService {
         return rentalRepository.findByUserIdAndExpiredAtBefore(userId, LocalDateTime.now());
     }
 
-    public Rental addRental(User user, Motorcycle motorcycle) {
+    public Rental addRental(User user, Motorcycle motorcycle, RentalDuration rentalDuration) {
         Rental rental = new Rental();
         rental.setUser(user);
         rental.setMotorcycle(motorcycle);
-        rental.setExpiredAt(LocalDateTime.now().plusMinutes(1440));
+        rental.setExpiredAt(LocalDateTime.now().plusDays(rentalDuration.getDays()));
         return rentalRepository.save(rental);
     }
 }

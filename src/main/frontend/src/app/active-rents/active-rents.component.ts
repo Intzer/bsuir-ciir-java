@@ -3,13 +3,18 @@ import { MotorcycleService } from '../services/motorcycle.service';
 import {  CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {RentalService} from '../services/rental.service'; // Добавляем CommonModule
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-active-rents',
   imports: [CommonModule, RouterModule],
   standalone: true, // <-- Добавь эту строку
   templateUrl: './active-rents.component.html',
-  styleUrl: './active-rents.component.css'
+  styleUrl: './active-rents.component.css',
+  providers: [
+    DatePipe,
+  ]
 })
 export class ActiveRentsComponent implements OnInit {
 

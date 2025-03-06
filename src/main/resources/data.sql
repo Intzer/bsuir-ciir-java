@@ -33,4 +33,5 @@ INSERT INTO rentals (motorcycle_id, user_id, created_at, expired_at) VALUES
 
 -- Добавляем сроки аренды
 INSERT INTO rentals_durations (days, cost) VALUES
+(7, 50),
 (30, 100);

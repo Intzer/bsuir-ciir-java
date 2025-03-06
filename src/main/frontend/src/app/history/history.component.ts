@@ -3,13 +3,18 @@ import { MotorcycleService } from '../services/motorcycle.service';
 import {  CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {RentalService} from '../services/rental.service'; // Добавляем CommonModule
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-history',
   imports: [CommonModule, RouterModule],
   standalone: true, // <-- Добавь эту строку
   templateUrl: './history.component.html',
-  styleUrl: './history.component.css'
+  styleUrl: './history.component.css',
+  providers: [
+    DatePipe,
+  ]
 })
 export class HistoryComponent implements OnInit {
 
