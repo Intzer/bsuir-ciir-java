@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {CommonModule} from '@angular/common';
-import {RentaldurationService} from '../services/rentalduration.service';
+import {RentalDurationService} from '../services/rental-duration.service';
 
 @Component({
   selector: 'app-rent',
@@ -29,7 +29,7 @@ export class RentComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     private motorcycleService: MotorcycleService,
-    private rentalDurationService: RentaldurationService
+    private rentalDurationService: RentalDurationService
   ) {
     this.rentForm = this.fb.group({
       motorcycleId: [0, Validators.required],   // Поле для ID мотоцикла
